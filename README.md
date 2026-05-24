@@ -1,4 +1,4 @@
-# 🧠 Inference Mesh — AWS Infrastructure
+#  Inference Mesh - AWS Infrastructure
 
 A two-tier AI inference microservices stack deployed on AWS EC2, fronted by an Application Load Balancer and managed via Terraform.
 
