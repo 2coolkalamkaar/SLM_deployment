@@ -277,3 +277,16 @@ Type `yes` to confirm. All AWS resources will be deleted.
 - The **iii-engine** (running on the TS instance) listens on `localhost:49134`. The caller-worker connects to it locally.
 - The Python instance has a **30 GB gp3** root volume and **8 GB swap** to handle large model weights without OOM crashes.
 - The ALB health check polls `/v1/chat/completions` with a broad `200–499` matcher to handle pre-warm-up states.
+
+## Production Hardening & Scaling Strategy
+
+Scaling for a 100x Larger Model
+If we were to swap out this 270-million parameter model for something 100x larger (like a 27B+ parameter model), our current CPU-bound setup wouldn't just time out .The instances would immediately crash from Out of Memory (OOM) errors. To handle that kind of scale, we would have to move away from general compute and provision dedicated GPU hardware. I would swap the inference instances for AWS g5 or p4d series instances, which provide the necessary VRAM and parallel processing power to actually load and run massive models efficiently.
+
+Hardening for Production
+
+If we were moving this out of the prototype phase and into a real production environment, I would focus on tightening the security at two main layers: the network edge and backend access.
+
+Securing the Front Door: Right now, the API is wide open. I would attach an AWS Web Application Firewall (WAF) to the Load Balancer to filter out malicious traffic. 
+
+Enforcing Least Privilege: I would lock down internal access by replacing any default EC2 profiles with highly restricted IAM roles. Since we are already leveraging AWS Systems Manager (SSM) for terminal access, I would formalize that pattern for the team. Relying purely on SSM allows us to securely manage instances without opening inbound ports or managing vulnerable SSH keys, drastically reducing our attack surface.
