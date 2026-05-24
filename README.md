@@ -76,7 +76,7 @@ Client ──HTTP:80──► ALB ──HTTP:3111──► TypeScript Worker
 ## Project Structure
 
 ```
-iac_folder/
+SLM_deployment/
 ├── README.md
 ├── deploy-scripts/
 │   ├── ts-setup.sh          # Bootstraps TypeScript caller worker + iii-engine
@@ -151,8 +151,8 @@ terraform version
 ### Step 1 — Clone this repo
 
 ```bash
-git clone <your-repo-url>
-cd iac_folder
+git clone https://github.com/2coolkalamkaar/SLM_deployment.git
+cd SLM_deployment
 ```
 
 ### Step 2 — Configure AWS credentials
